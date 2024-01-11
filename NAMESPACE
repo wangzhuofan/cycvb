@@ -1,0 +1,6 @@
+useDynLib(cycvb, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
+export(cycvb)
+import(Rcpp,RcppArmadillo)
+
