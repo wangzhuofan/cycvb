@@ -28,6 +28,20 @@ mat sigmoid_mat(mat x){
 //   }
 //   return AGrad;
 // }
+
+//' grad
+//'
+//' @param x The observed data following a structural equation model
+//' @param A Parameter a of the hard concrete distribution
+//' @param mu_u U matrix of the SVD of matrix mu
+//' @param mu_s Diagnal matrix of the SVD of matrix mu
+//' @param mu_v V matrix of the SVD of matrix mu
+//' @param noiseType Type of the distribution of the noise in the structural equation model. It needs to be one of the following: 'gaussian','t','laplace','gumbel'.
+//' @param noiseParams Parameter of noise distribution
+//' @param trans_u Monte Carlo sample of a transformation of uniform distribution
+//' @param n_randomSample Monte Carlo sample of normal distribution
+//'
+//' @return gradient of ELBO funcion
 // [[Rcpp::export]]
 List grad(arma::mat x,
           arma::mat A,
@@ -62,7 +76,7 @@ List grad(arma::mat x,
     grad_core = n*Jacobian-scale_diff.each_slice()*(x.t()*x);
   } else if (noiseType == "t") {
     cube temp = diff;
-    temp.each_slice([noiseParamsMat,x](mat& slice) { slice = slice%(noiseParamsMat + 1) * x.t()/(pow(slice*x.t(),2)+noiseParamsMat)*x; });
+    temp.each_slice([noiseParamsMat,x](mat& slice) { slice = slice * x.t()%(noiseParamsMat + 1)/(pow(slice*x.t(),2)+noiseParamsMat)*x; });
     grad_core = n*Jacobian-temp;
   } else if (noiseType == "gumbel") {
     cube temp = scale_diff;

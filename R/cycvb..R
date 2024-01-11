@@ -1,6 +1,13 @@
-# rm(list = ls())
-# sourceCpp("./code/02-2grad_test.cpp")
-
+#' cycvb
+#'
+#' @param x The observed data following a structural equation model
+#' @param noise.type Type of the distribution of the noise in the structural equation model. It needs to be one of the following: 'gaussian','t','laplace','gumbel'.
+#' @param seed Set a seed to reproduce results. Default:1
+#'
+#' @return Inclusion probability of the adjacent matrix
+#' @export
+#'
+#' @examples cycvb(matrix(rt(500*10,3),500,10),"t")
 cycvb <- function(x,noise.type=c("gaussian", "t", "gumbel","laplace"),seed = 1){
   noise.type = match.arg(noise.type)
   n = nrow(x)
@@ -100,6 +107,12 @@ cycvb <- function(x,noise.type=c("gaussian", "t", "gumbel","laplace"),seed = 1){
   est_noise.params = param$noise.params
   return(list(est_a = est_a,est_prob = est_prob,est_mu = est_mu,est_noise.params = est_noise.params))
 }
+
+#' sigmoid
+#'
+#' @param x input
+#'
+#' @return sigmoid function of $x$
 
 sigmoid <-function(x){
   res = 1/(1+exp(-x))

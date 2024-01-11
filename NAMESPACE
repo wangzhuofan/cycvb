@@ -3,4 +3,5 @@ importFrom(Rcpp, evalCpp)
 exportPattern("^[[:alpha:]]+")
 export(cycvb)
 import(Rcpp,RcppArmadillo)
+importFrom("stats", "rnorm", "runif")
 
